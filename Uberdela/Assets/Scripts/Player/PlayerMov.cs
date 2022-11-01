@@ -56,7 +56,7 @@ public class PlayerMov : MonoBehaviour
             //FindObjectOfType<AudioManager>().Play("Land");
         }
 
-        if (Input.GetKeyDown(KeyCode.Z) && playerControlsEnabled)
+        if (Input.GetButtonDown("Jump") && playerControlsEnabled)
         {
             jumpTimer = Time.deltaTime + jumpDelay;
         }
@@ -166,7 +166,7 @@ public class PlayerMov : MonoBehaviour
             {
                 rb.gravityScale = gravity * fallMultiplier;
             }
-            else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.Z))
+            else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
             {
                 rb.gravityScale = gravity * (fallMultiplier / 2);
             }
@@ -209,7 +209,7 @@ public class PlayerMov : MonoBehaviour
         rb.gravityScale = gravity;
     }
 
-    void Flip()
+    public void Flip()
     {
         facingRight = !facingRight;
         transform.rotation = Quaternion.Euler(0, facingRight ? 0 : 180, 0);
