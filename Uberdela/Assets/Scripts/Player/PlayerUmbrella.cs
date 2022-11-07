@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class PlayerUmbrella : MonoBehaviour
 {
-
-    Vector3 mousePos;
+    public float clampedSpeed = 3f; // max speed when moving against umbrella
+    public float clampingCurve = 250f; // max speed when moving against umbrella
+    private Vector3 mousePos;
     private float mouseAngle;
+    private bool facingRight = true;
 
     // Component References
-    public PlayerMov mov;
+    public Transform player;
+    private Rigidbody2D playerRB;
     private Animator anim;
 
     void Start()
     {
+        playerRB = player.gameObject.GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator> ();
     }
 
@@ -22,40 +26,56 @@ public class PlayerUmbrella : MonoBehaviour
         mousePos= Camera.main.ScreenToWorldPoint (Input.mousePosition) + Vector3.forward * 10;
         mouseAngle = Vector3.Angle (Vector3.down, mousePos - transform.position);
         
-        
         Debug.DrawLine(mousePos,transform.position);
 
+        ClampVelocity();
         AnimateRotation();
     }
 
     void AnimateRotation(){
 
         int treatedAngle = (int)mouseAngle / 36;
-        Debug.Log(mouseAngle + " " + treatedAngle);
         
         switch(treatedAngle){
-        case 0:
-            anim.Play("down");
-            break;
-        case 1:
-            anim.Play("diagonalDown");
-            break;
-        case 2:
-            anim.Play("straight");
-            break;
-        case 3:
-            anim.Play("diagonalUp");
-            break;
-        case 4:
+        case 4: // pointing straight up
             anim.Play("up");
             break;
-        default:
+        case 3: // pointing 45 degrees up
+            anim.Play("diagonalUp");
+            break;
+        case 2: // pointing straight forward
+            anim.Play("straight");
+            break;
+        case 1: // pointing 45 degrees down
+            anim.Play("diagonalDown");
+            break;
+        case 0: // pointing straight down
+            anim.Play("down");
+            break;
+        default: // idk
             anim.Play("down");
             break;
         }
-        if ((mousePos - transform.position).x > 0 && !mov.facingRight)
-            mov.Flip ();
-        else if ((mousePos - transform.position).x < 0 && mov.facingRight)
-            mov.Flip ();
+
+        if ((mousePos - player.position).x > 0 && !facingRight)
+            Flip ();
+        else if ((mousePos - player.position).x < 0 && facingRight)
+            Flip ();
+    }
+
+    void ClampVelocity(){
+        float velocityAngle = Vector3.Angle (((Vector3)playerRB.velocity + Vector3.forward * 10), Vector3.down);
+        float clampingAngle = mouseAngle - velocityAngle;
+
+        float clampedVelocity = (clampingCurve / clampingAngle) - (clampingCurve / 90) + clampedSpeed; //smoothly transition between not clamping velocity and clamping it at clampedSpeed
+
+        if(clampingAngle > 0)
+            playerRB.velocity = Vector2.ClampMagnitude(playerRB.velocity, clampedVelocity);
+    }
+
+    public void Flip()
+    {
+        facingRight = !facingRight;
+        player.rotation = Quaternion.Euler(0, facingRight ? 0 : 180, 0);
     }
 }
