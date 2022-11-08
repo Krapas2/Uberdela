@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class PlayerUmbrella : MonoBehaviour
 {
-    public Transform test1;
-    public Transform test2;
     public float clampedSpeed = 3f; // max speed when moving against umbrella
     public float clampingCurve = 250f; // max speed when moving against umbrella
-    private Vector3 mousePos;
+    [HideInInspector]
+    public Vector3 mousePos;
     private float mouseAngle;
     private bool facingRight = true;
+    [HideInInspector]
+    public bool active = true;
 
     // Component References
     public Transform player;
@@ -27,10 +28,10 @@ public class PlayerUmbrella : MonoBehaviour
     {
         mousePos= Camera.main.ScreenToWorldPoint (Input.mousePosition) + Vector3.forward * 10;
         mouseAngle = Vector3.Angle (Vector3.down, mousePos - transform.position);
-        
-        Debug.DrawLine(mousePos, transform.position);
 
-        ClampVelocity();
+        if(active)
+            ClampVelocity();
+
         AnimateRotation();
     }
 
@@ -66,16 +67,16 @@ public class PlayerUmbrella : MonoBehaviour
     }
 
     void ClampVelocity(){
-        float velocityAngle = Vector3.Angle(playerRB.velocity.normalized, Vector3.down);
-        float clampingAngle = mouseAngle - velocityAngle - 90;
-
+        float clampingAngle = Vector2.Angle(playerRB.velocity, mousePos - transform.position) - 90;
         float clampedVelocity = (clampingCurve / clampingAngle) - (clampingCurve / 90) + clampedSpeed; //smoothly transition between not clamping velocity and clamping it at clampedSpeed
-/*
-        Debug.Log(Vector3.Angle ((mousePos - transform.position).normalized, Vector3.down) - Vector3.Angle(playerRB.velocity.normalized, Vector3.down) - 90);
-        Debug.DrawLine(playerRB.velocity.normalized, (mousePos - transform.position).normalized);
-*/
-        if(clampingAngle > 0)
+
+        Debug.Log(Vector2.Angle(playerRB.velocity, mousePos - transform.position));
+        Debug.DrawLine(transform.position, mousePos);
+        Debug.DrawLine(transform.position, playerRB.velocity + (Vector2)transform.position);
+
+        if(clampingAngle > 0){
             playerRB.velocity = Vector2.ClampMagnitude(playerRB.velocity, clampedVelocity);
+        }
     }
 
     public void Flip()
