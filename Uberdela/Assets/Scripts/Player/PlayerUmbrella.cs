@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerUmbrella : MonoBehaviour
 {
+    public Transform test1;
+    public Transform test2;
     public float clampedSpeed = 3f; // max speed when moving against umbrella
     public float clampingCurve = 250f; // max speed when moving against umbrella
     private Vector3 mousePos;
@@ -21,12 +23,12 @@ public class PlayerUmbrella : MonoBehaviour
 		anim = GetComponent<Animator> ();
     }
 
-    void Update()
+    void LateUpdate()
     {
         mousePos= Camera.main.ScreenToWorldPoint (Input.mousePosition) + Vector3.forward * 10;
         mouseAngle = Vector3.Angle (Vector3.down, mousePos - transform.position);
         
-        Debug.DrawLine(mousePos,transform.position);
+        Debug.DrawLine(mousePos, transform.position);
 
         ClampVelocity();
         AnimateRotation();
@@ -64,11 +66,14 @@ public class PlayerUmbrella : MonoBehaviour
     }
 
     void ClampVelocity(){
-        float velocityAngle = Vector3.Angle (((Vector3)playerRB.velocity + Vector3.forward * 10), Vector3.down);
-        float clampingAngle = mouseAngle - velocityAngle;
+        float velocityAngle = Vector3.Angle(playerRB.velocity.normalized, Vector3.down);
+        float clampingAngle = mouseAngle - velocityAngle - 90;
 
         float clampedVelocity = (clampingCurve / clampingAngle) - (clampingCurve / 90) + clampedSpeed; //smoothly transition between not clamping velocity and clamping it at clampedSpeed
-
+/*
+        Debug.Log(Vector3.Angle ((mousePos - transform.position).normalized, Vector3.down) - Vector3.Angle(playerRB.velocity.normalized, Vector3.down) - 90);
+        Debug.DrawLine(playerRB.velocity.normalized, (mousePos - transform.position).normalized);
+*/
         if(clampingAngle > 0)
             playerRB.velocity = Vector2.ClampMagnitude(playerRB.velocity, clampedVelocity);
     }
