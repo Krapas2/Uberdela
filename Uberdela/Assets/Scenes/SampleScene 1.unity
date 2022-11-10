@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -741,7 +741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clampedSpeed: 1.5
   clampingCurve: 250
-  mouseAngle: 0
+  mousePos: {x: 0, y: 0, z: 0}
   active: 1
   player: {fileID: 955785585}
 --- !u!212 &488750514
@@ -912,7 +912,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 495365528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 43.7, y: 22.3, z: 0}
+  m_LocalPosition: {x: 65, y: 28.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1297,7 +1297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 706673706}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 35.81, y: 22.949999, z: 0}
+  m_LocalPosition: {x: 57.11, y: 29.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1336,7 +1336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -1375,8 +1375,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761742287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.7, y: 8.6, z: 0}
-  m_LocalScale: {x: 2, y: 3, z: 1}
+  m_LocalPosition: {x: 48.4, y: 9.34, z: 0}
+  m_LocalScale: {x: 0.8496, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1543,7 +1543,7 @@ GameObject:
   - component: {fileID: 955785581}
   m_Layer: 7
   m_Name: Circle
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1794,7 +1794,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110972354}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.56, y: 25.279999, z: 0}
+  m_LocalPosition: {x: 61.86, y: 31.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -1979,7 +1979,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clampedSpeed: 3
   clampingCurve: 250
-  mouseAngle: 0
+  mousePos: {x: 0, y: 0, z: 0}
   active: 1
   player: {fileID: 1609382387}
 --- !u!212 &1260537201
@@ -2283,7 +2283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647
@@ -2528,7 +2528,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1834828914}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 39.030003, y: 19.4, z: 0}
+  m_LocalPosition: {x: 60.33, y: 25.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2682,7 +2682,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2032287106}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 48.440002, y: 23.82, z: 0}
+  m_LocalPosition: {x: 69.740005, y: 30.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2805,7 +2805,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040842418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.72, y: 16.019999, z: 0}
+  m_LocalPosition: {x: 55.02, y: 22.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2844,7 +2844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 40
-  acceleration: 3.5
+  acceleration: 1
   affects:
     serializedVersion: 2
     m_Bits: 2147483647

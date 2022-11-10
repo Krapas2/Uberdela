@@ -11,6 +11,7 @@ public class WindZone : MonoBehaviour
     public int umbrellaAlignmentCurve = 1;
 
     private PlayerUmbrella umbrella;
+    private PlayerMovement playerMov;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class WindZone : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        if (col.gameObject.CompareTag("Player")) { col.GetComponent<PlayerMovement>().enabled = false; } // tira controle do jogador quando estiver no wind
         Rigidbody2D rb = col.gameObject.GetComponent<Rigidbody2D>();
         if ((affects & (1 << col.gameObject.layer)) != 0 && rb)
         {
@@ -59,10 +61,13 @@ public class WindZone : MonoBehaviour
     void OnTriggerExit2D(Collider2D col)
     {
         Rigidbody2D rb = col.gameObject.GetComponent<Rigidbody2D>();
+
+        if(col.gameObject.CompareTag("Player")) col.GetComponent<PlayerMovement>().enabled = true; // retorna controle do jogador
         if ((affects & (1 << col.gameObject.layer)) != 0 && rb)
         {
             //rb.gravityScale = 1;
             rb.drag = 0f;
+            
         }
     }
 }
