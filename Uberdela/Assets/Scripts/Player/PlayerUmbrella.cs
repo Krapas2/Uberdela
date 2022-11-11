@@ -10,7 +10,7 @@ public class PlayerUmbrella : MonoBehaviour
     public Vector3 mousePos;
     private float mouseAngle;
     private bool facingRight = true;
-    [HideInInspector]
+    //[HideInInspector]
     public bool active = true;
 
     // Component References
@@ -29,10 +29,12 @@ public class PlayerUmbrella : MonoBehaviour
         mousePos= Camera.main.ScreenToWorldPoint (Input.mousePosition) + Vector3.forward * 10;
         mouseAngle = Vector3.Angle (Vector3.down, mousePos - transform.position);
 
-        if(active)
-            ClampVelocity();
-
-        AnimateRotation();
+        if(Input.GetButton("Fire1")){
+            AnimateRotation();
+            if(active)
+                ClampVelocity();
+        }else
+            anim.Play("down");
     }
 
     void AnimateRotation(){
@@ -55,7 +57,7 @@ public class PlayerUmbrella : MonoBehaviour
         case 0: // pointing straight down
             anim.Play("down");
             break;
-        default: // idk
+        default: // ¯\_(ツ)_/¯
             anim.Play("down");
             break;
         }
@@ -70,7 +72,6 @@ public class PlayerUmbrella : MonoBehaviour
         float clampingAngle = Vector2.Angle(playerRB.velocity, mousePos - transform.position) - 90;
         float clampedVelocity = (clampingCurve / clampingAngle) - (clampingCurve / 90) + clampedSpeed; //smoothly transition between not clamping velocity and clamping it at clampedSpeed
 
-        Debug.Log(Vector2.Angle(playerRB.velocity, mousePos - transform.position));
         Debug.DrawLine(transform.position, mousePos);
         Debug.DrawLine(transform.position, playerRB.velocity + (Vector2)transform.position);
 

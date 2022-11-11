@@ -5,9 +5,15 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    
+    [Header("Walking")]
     //-------------------walking-------------------
     public float walkSpeed = 15;
+    public float walkAccel = 45;
+    public float airAccel = 25;
+    public float groundedDecel = 30;
 
+    [Header("Jumping")]
     //-------------------jumping-------------------
     public float jumpForce = 30;
     public float fallMultiplier = 2.5f;
@@ -16,13 +22,9 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask ground;
 
     //-------------------Misc-------------------
-
-    public LayerMask platformLayer;
-
-    private float horizontalInput;
-    private float verticalInput;
-
-    private bool grounded;
+    private Vector2 moveInput;
+    [HideInInspector]
+    public bool grounded;
 
     //-------------------Components-------------------
     private Rigidbody2D rb;
@@ -39,17 +41,25 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         grounded = Physics2D.OverlapCircle(groundCheck.position, 0f, ground);
         
         //-------------------walking-------------------
-        if (grounded || horizontalInput != 0) 
-            rb.velocity = new Vector2(horizontalInput*walkSpeed, rb.velocity.y);
+
+        if(moveInput.x != 0){
+            if(grounded){
+                Accelerate(walkAccel);
+            } else{
+                Accelerate(airAccel);
+            }
+        }else if(moveInput.x == 0 && grounded){
+            float velocityToAdd = -rb.velocity.normalized.x * groundedDecel * Time.deltaTime;
+            rb.AddForce(velocityToAdd * Vector2.right, ForceMode2D.Impulse);
+        }
 
         //-------------------jump-------------------
         if (Input.GetButtonDown("Jump") && grounded) 
-            rb.velocity += Vector2.up*jumpForce;
+            rb.AddForce(Vector2.up*jumpForce, ForceMode2D.Impulse);
         
         if(rb.velocity.y < 0) //better jump from https://youtu.be/7KiK0Aqtmzc
 			rb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
@@ -57,11 +67,6 @@ public class PlayerMovement : MonoBehaviour
 			rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
 
         //-------------------fall through platform-------------------
-        
-        Collider2D platform = Physics2D.OverlapCircle(groundCheck.position, .1f, platformLayer);
-        if(platform != null && Input.GetAxisRaw("Vertical") < 0){
-            StartCoroutine("FallThroughPlatform", platform.GetComponent<PlatformEffector2D>());
-        }
 /*
         //-------------------ANIMAÇÃO-------------------
         if(grounded){
@@ -80,10 +85,10 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    IEnumerator FallThroughPlatform(PlatformEffector2D platform)
-    {
-        platform.rotationalOffset = 180f;
-        yield return new WaitForSeconds (.5f);
-        platform.rotationalOffset = 0f;
+    void Accelerate(float acceleration){
+        float velocityToAdd = moveInput.x * acceleration * Time.deltaTime;
+        if(Mathf.Abs(rb.velocity.x + velocityToAdd) <= walkSpeed || Mathf.Abs(rb.velocity.x + velocityToAdd) < Mathf.Abs(rb.velocity.x)){
+            rb.AddForce(velocityToAdd * Vector2.right, ForceMode2D.Impulse);
+        }
     }
 }

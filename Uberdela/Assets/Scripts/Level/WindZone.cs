@@ -29,6 +29,10 @@ public class WindZone : MonoBehaviour
         {
             //rb.gravityScale = 0;
             rb.drag = .15f;
+            if(umbrella){
+                if(umbrella.transform.parent.gameObject == col.gameObject)
+                    umbrella.active = false;
+            }
         }
     }
     void OnTriggerStay2D(Collider2D col)
@@ -38,13 +42,15 @@ public class WindZone : MonoBehaviour
         {
             if(umbrella){
                 if(umbrella.transform.parent.gameObject == col.gameObject){
-                    float clampingAngle = Vector2.Angle(-transform.up, umbrella.mousePos - transform.position);
-                    float umbrellaAlignment = Mathf.Pow(clampingAngle, umbrellaAlignmentCurve)/Mathf.Pow(180, umbrellaAlignmentCurve);
+                    if(Input.GetButton("Fire1")){
+                        float clampingAngle = Vector2.Angle(-transform.up, umbrella.mousePos - transform.position);
+                        float umbrellaAlignment = Mathf.Pow(clampingAngle, umbrellaAlignmentCurve)/Mathf.Pow(180, umbrellaAlignmentCurve);
 
-                    Vector2 speedToAdd = Vector2.ClampMagnitude(transform.up * acceleration * umbrellaAlignment, maxSpeed * umbrellaAlignment);
+                        Vector2 speedToAdd = Vector2.ClampMagnitude(transform.up * acceleration * Time.deltaTime * umbrellaAlignment, maxSpeed * umbrellaAlignment);
 
-                    //rb.gravityScale = 1-umbrellaAlignment;
-                    rb.AddForce(speedToAdd, ForceMode2D.Impulse); 
+                        //rb.gravityScale = 1-umbrellaAlignment;
+                        rb.AddForce(speedToAdd, ForceMode2D.Impulse); 
+                    }
                 } else{
                     rb.AddForce(transform.up * acceleration, ForceMode2D.Impulse); 
                     rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
@@ -63,6 +69,10 @@ public class WindZone : MonoBehaviour
         {
             //rb.gravityScale = 1;
             rb.drag = 0f;
+            if(umbrella){
+                if(umbrella.transform.parent.gameObject == col.gameObject)
+                    umbrella.active = true;
+            }
         }
     }
 }
