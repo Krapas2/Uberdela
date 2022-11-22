@@ -13,7 +13,7 @@ public class CameraFollowGroup : MonoBehaviour
         
     }
 
-    void LateUpdate()
+    void Update()
     {
         Vector3 variancia = VarianciaPosicao(seguir);
         float cameraTamanho = ((variancia.x > variancia.y) ? variancia.x : variancia.y)*1.5f;
