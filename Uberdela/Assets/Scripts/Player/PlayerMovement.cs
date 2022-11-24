@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
         //-------------------assigning components-------------------
         rb = GetComponent<Rigidbody2D>();
         //anim = GetComponent<Animator>();
+        
+        // friction bug fix
     }
 
 
@@ -52,9 +54,15 @@ public class PlayerMovement : MonoBehaviour
             } else{
                 Accelerate(airAccel);
             }
-        }else if(moveInput.x == 0 && grounded){
+        }else if(grounded){
             float velocityToAdd = -rb.velocity.normalized.x * groundedDecel * Time.deltaTime;
-            rb.AddForce(velocityToAdd * Vector2.right, ForceMode2D.Impulse);
+            if(Mathf.Abs(rb.velocity.magnitude) > .01f){
+                velocityToAdd = Mathf.Clamp(velocityToAdd, -rb.velocity.magnitude, rb.velocity.magnitude);
+                rb.AddForce(velocityToAdd * Vector2.right, ForceMode2D.Impulse);
+            } else{
+                rb.velocity = Vector2.zero;
+            }
+
         }
 
         //-------------------jump-------------------

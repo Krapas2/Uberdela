@@ -20,7 +20,6 @@ public class InteractEvent : MonoBehaviour
     {
         if(Input.GetButtonDown("Interact")){
             if(Physics2D.OverlapCircle(transform.position, range, player)){
-                Debug.Log("gaming");
                 _event.Invoke();
             }
         }

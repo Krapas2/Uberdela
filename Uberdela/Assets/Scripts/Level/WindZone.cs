@@ -18,11 +18,6 @@ public class WindZone : MonoBehaviour
         umbrella = FindObjectOfType<PlayerUmbrella>();
     }
 
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Player")) { col.GetComponent<PlayerMovement>().enabled = false; } // tira controle do jogador quando estiver no wind
@@ -40,13 +35,16 @@ public class WindZone : MonoBehaviour
         {
             if(umbrella){
                 if(umbrella.transform.parent.gameObject == col.gameObject){
-                    float clampingAngle = Vector2.Angle(-transform.up, umbrella.mousePos - transform.position);
+                    float clampingAngle = Vector2.Angle(-transform.up, umbrella.mousePos - umbrella.transform.parent.position);
                     float umbrellaAlignment = Mathf.Pow(clampingAngle, umbrellaAlignmentCurve)/Mathf.Pow(180, umbrellaAlignmentCurve);
 
                     Vector2 speedToAdd = Vector2.ClampMagnitude(transform.up * acceleration * umbrellaAlignment, maxSpeed * umbrellaAlignment);
 
                     //rb.gravityScale = 1-umbrellaAlignment;
-                    rb.AddForce(speedToAdd, ForceMode2D.Impulse); 
+                    if(Input.GetButton("Fire1")){
+                        //Debug.Log(speedToAdd);
+                        rb.AddForce(speedToAdd, ForceMode2D.Impulse); 
+                    }
                 } else{
                     rb.AddForce(transform.up * acceleration, ForceMode2D.Impulse); 
                     rb.velocity = Vector2.ClampMagnitude(rb.velocity, maxSpeed);
