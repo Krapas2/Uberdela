@@ -10,13 +10,6 @@ public class TriggerLoadArea : MonoBehaviour
     public GameObject unloadObject;
     public LayerMask triggers;
 
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if ((triggers & (1 << col.gameObject.layer)) != 0){
-            Load();
-        }
-    }
-
     public void Load(){
         loadObject.SetActive(true);
         unloadObject.SetActive(false);
