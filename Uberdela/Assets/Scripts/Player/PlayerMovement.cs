@@ -25,17 +25,18 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 moveInput;
     [HideInInspector]
     public bool grounded;
+    public bool facingRight;
 
     //-------------------Components-------------------
     private Rigidbody2D rb;
-    //private Animator anim;
+    private Animator anim;
     
 
     void Start()
     {
         //-------------------assigning components-------------------
         rb = GetComponent<Rigidbody2D>();
-        //anim = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
         
         // friction bug fix
     }
@@ -62,8 +63,12 @@ public class PlayerMovement : MonoBehaviour
             } else{
                 rb.velocity = Vector2.zero;
             }
-
         }
+
+        if (moveInput.x > 0 && !facingRight)
+            Flip ();
+        else if (moveInput.x < 0 && facingRight) 
+            Flip ();
 
         //-------------------jump-------------------
         if (Input.GetButtonDown("Jump") && grounded) 
@@ -75,21 +80,21 @@ public class PlayerMovement : MonoBehaviour
 			rb.velocity += Vector2.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
 
         //-------------------fall through platform-------------------
-/*
+
         //-------------------ANIMAÇÃO-------------------
         if(grounded){
             if(Mathf.Abs(rb.velocity.x) > 0)
-                anim.Play("PlayerWalk");
+                anim.Play("Walk");
             else
-                anim.Play("PlayerIdle");
+                anim.Play("Idle");
         } else{
             if (rb.velocity.y > 5f)
-                anim.Play("PlayerJumpRise");
+                anim.Play("Jump");
             else if (rb.velocity.y > -5f)
-                anim.Play("PlayerJumpPeak");
+                anim.Play("FallStart");
             else
-                anim.Play("PlayerJumpFall");
-        }*/
+                anim.Play("Fall");
+        }
 
     }
 
@@ -102,5 +107,11 @@ public class PlayerMovement : MonoBehaviour
 
     public void setMaxSpeed(float walkSpeed){
         this.walkSpeed = walkSpeed;
+    }
+    
+    public void Flip()
+    {
+        facingRight = !facingRight;
+        transform.rotation = Quaternion.Euler(0, facingRight ? 0 : 180, 0);
     }
 }

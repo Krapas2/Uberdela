@@ -15,6 +15,8 @@ public class PlayerUmbrella : MonoBehaviour
     public bool active = true;
     private float originalJump;
     private float originalGravity;
+
+    //private bool clamping = false;
     // Component References
     public Transform player;
     private PlayerMovement playerMovement;
@@ -35,6 +37,8 @@ public class PlayerUmbrella : MonoBehaviour
     {
         mousePos= Camera.main.ScreenToWorldPoint (Input.mousePosition) + Vector3.forward * 10;
         mouseAngle = Vector3.Angle (Vector3.down, mousePos - transform.position);
+        //clamping ^= Input.GetButtonDown("Fire1");
+
 
         if(Input.GetButton("Fire1") && !Input.GetButtonDown("Jump")){
             playerRB.gravityScale = originalGravity / gravitySupression;
@@ -75,9 +79,9 @@ public class PlayerUmbrella : MonoBehaviour
         }
 
         if ((mousePos - player.position).x > 0 && !facingRight)
-            Flip ();
+            playerMovement.Flip();
         else if ((mousePos - player.position).x < 0 && facingRight)
-            Flip ();
+            playerMovement.Flip();
     }
 
     void ClampVelocity(){
@@ -105,12 +109,6 @@ public class PlayerUmbrella : MonoBehaviour
 
         if(clampingAngle > 0)
             playerRB.velocity = Vector3.ClampMagnitude(playerRB.velocity, newClamped.magnitude);*/
-    }
-
-    public void Flip()
-    {
-        facingRight = !facingRight;
-        player.rotation = Quaternion.Euler(0, facingRight ? 0 : 180, 0);
     }
 
     Vector3 RotateByRad(Vector2 v, float ang){
