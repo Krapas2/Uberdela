@@ -99,4 +99,8 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(velocityToAdd * Vector2.right, ForceMode2D.Impulse);
         }
     }
+
+    public void setMaxSpeed(float walkSpeed){
+        this.walkSpeed = walkSpeed;
+    }
 }

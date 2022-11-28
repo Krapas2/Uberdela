@@ -37,10 +37,12 @@ public class IdArms : MonoBehaviour
 
         transform.position += velocityVector * Time.deltaTime + (accelerationVector * (Time.deltaTime * Time.deltaTime))/2;
 
-        if(velocityVector.x > 7.5){
-            anim.Play("ArmOpen");
-        } else{
-            anim.Play("ArmClosed");
+        if(anim){
+            if(velocityVector.x > 7.5){
+                anim.Play("ArmOpen");
+            } else{
+                anim.Play("ArmClosed");
+            }
         }
     }
     void UpdateVelocity(){

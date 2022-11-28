@@ -10,7 +10,7 @@ public class CameraFollowGroup : MonoBehaviour
 
     void Start()
     {
-        
+        transform.position = MediaPosicao(seguir) - Vector3.forward * 10;
     }
 
     void Update()
